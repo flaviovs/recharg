@@ -19,6 +19,7 @@ class Option {
 	protected $options;
 	protected $placeholder;
 	protected $converter;
+	protected $hidden = FALSE;
 	protected $required = FALSE;
 	protected $multiple_handling = self::MULTIPLE_STORE_LAST;
 
@@ -159,6 +160,15 @@ class Option {
 
 	public function getPlaceholder() {
 		return $this->placeholder ?: strtoupper($this->name);
+	}
+
+	public function setHidden($hidden) {
+		$this->hidden = $hidden;
+		return $this;
+	}
+
+	public function isHidden() {
+		return $this->hidden;
 	}
 
 	public function isRequired() {

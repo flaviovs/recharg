@@ -1,0 +1,26 @@
+{
+	"options": {
+		"bar": {
+			"matches": ["b"]
+		},
+		"foo": {
+			"matches": ["f", "foo"],
+			"hidden": true
+		},
+		"zee": {
+			"matches": ["zee"]
+		}
+	}
+}
+/**
+   Hidden options should not appear in help output.
+
+   @expects
+
+Usage: progname [-b] [--zee]
+
+Options and arguments:
+
+  -b                        (No help text for this option.)
+  --zee                     (No help text for this option.)
+*/

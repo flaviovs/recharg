@@ -79,6 +79,10 @@ class HelpFormatter {
 		$long_required = [];
 
 		foreach ($this->getOptionsSorted($cmdline) as $opt) {
+			if ($opt->isHidden()) {
+				continue;
+			}
+
 			// We only process the first match.
 			$flag = $opt->getMatches()[0];
 
@@ -207,6 +211,9 @@ class HelpFormatter {
 		$options_help = '';
 
 		foreach ($this->getOptionsSorted($cmd) as $opt) {
+			if ($opt->isHidden()) {
+				continue;
+			}
 			$short = [];
 			$long = [];
 			$placeholder = $opt->getPlaceholder();
