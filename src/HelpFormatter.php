@@ -107,9 +107,17 @@ class HelpFormatter {
 				// A long option
 				if ($opt->acceptsArguments()) {
 					if ($opt->isRequired()) {
-						$long_required[] = "$flag=$placeholder";
+						if ($opt->hasDefault()) {
+							$long_required[] = $flag . "[=$placeholder]";
+						} else {
+							$long_required[] = "$flag=$placeholder";
+						}
 					} else {
-						$long_optional[] = "[$flag=$placeholder]";
+						if ($opt->hasDefault()) {
+							$long_optional[] = "[$flag" . "[=$placeholder]]";
+						} else {
+							$long_optional[] = "[$flag=$placeholder]";
+						}
 					}
 				} else {
 					if ($opt->isRequired()) {
