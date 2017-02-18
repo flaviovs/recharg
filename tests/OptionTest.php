@@ -74,4 +74,12 @@ class OptionTest extends PHPUnit\Framework\TestCase {
 		$this->assertEquals('bar', $opt->convert('foo'));
 	}
 
+	public function testGetPlaceholder() {
+		$opt = new Option('foobar');
+
+		$this->assertEquals('FOOBAR', $opt->getPlaceholder());
+
+		$opt->setPlaceholder('leemoo');
+		$this->assertEquals('leemoo', $opt->getPlaceholder());
+	}
 }

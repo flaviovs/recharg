@@ -17,6 +17,7 @@ class Option {
 	protected $action;
 	protected $type;
 	protected $options;
+	protected $placeholder;
 	protected $converter;
 	protected $required = FALSE;
 	protected $multiple_handling = self::MULTIPLE_STORE_LAST;
@@ -149,6 +150,15 @@ class Option {
 	public function setRequired($required) {
 		$this->required = $required;
 		return $this;
+	}
+
+	public function setPlaceholder($placeholder) {
+		$this->placeholder = $placeholder;
+		return $this;
+	}
+
+	public function getPlaceholder() {
+		return $this->placeholder ?: strtoupper($this->name);
 	}
 
 	public function isRequired() {

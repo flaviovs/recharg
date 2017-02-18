@@ -25,6 +25,10 @@ trait CommandLineMockBuilder {
 			->will($this->returnArgument(0));
 
 		$option
+			->method('getPlaceholder')
+			->willReturn(isset($spec['placeholder']) ? $spec['placeholder'] : strtoupper($name));
+
+		$option
 			->method('acceptsArguments')
 			->willReturn(!empty($spec['accepts_arguments']));
 
