@@ -1,0 +1,22 @@
+// Non-matching short option.
+{
+	"cmdline": {
+		"options": {
+			"opt1": {
+				"matches": ["x"]
+			},
+			"opt2": {
+				"matches": ["y"]
+			}
+		}
+	},
+
+	"tests": [
+		{
+			"argv": ["-a"]
+		},
+		{
+			"argv": ["--x"]
+		}
+	]
+}

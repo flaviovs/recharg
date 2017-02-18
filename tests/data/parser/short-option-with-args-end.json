@@ -1,0 +1,45 @@
+// Check that short options joined in the command line, whereas the current
+// command line expectes arguments only for the last option specified, work
+// properly.
+{
+	"cmdline": {
+		"options": {
+			"a": {
+				"matches": ["a"]
+			},
+			"b": {
+				"matches": ["b"]
+			},
+			"c": {
+				"matches": ["c"],
+				// NB: this options does accept an argument.
+				"accepts_arguments": true
+			}
+		}
+	},
+
+	"tests": [
+		{
+			"argv": ["-abc"],
+			"expects": {
+				"arguments": {
+					"a": true,
+					"b": true,
+					"c": true
+				},
+				"operands": []
+			}
+		},
+		{
+			"argv": ["-abc", "foo"],
+			"expects": {
+				"arguments": {
+					"a": true,
+					"b": true,
+					"c": "foo"
+				},
+				"operands": []
+			}
+		}
+	]
+}

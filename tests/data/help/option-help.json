@@ -1,0 +1,20 @@
+{
+	"options": {
+		"foo": {
+			"matches": ["f"],
+			"help": "This is the help."
+		}
+	}
+
+}
+/**
+   Check that option help is displayed properly.
+
+   @expects
+
+Usage: progname [-f]
+
+Options and arguments:
+
+  -f                        This is the help.
+*/

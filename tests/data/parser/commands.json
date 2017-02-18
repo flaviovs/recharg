@@ -1,0 +1,74 @@
+// Basic commands test.
+{
+	"cmdline": {
+		"options": {
+			"help": {
+				"matches": ["help", "h"]
+			}
+		},
+
+		"commands": {
+			"cmd1": {
+				"options": {
+					"cmd1opt": {
+						"matches": ["cmd1opt"]
+					}
+				}
+			},
+			"cmd2": {
+				"options": {
+					"cmd2opt": {
+						"matches": ["cmd2opt"]
+					}
+				},
+				"commands": {
+					"cmd2aaa": {
+						"options": {
+							"cmd2aaaopt": {
+								"matches": ["cmd2aaaopt"]
+							}
+						}
+					}
+				}
+			},
+			"cmd3": {
+				"options": {
+					"cmd3opt": {
+						"matches": ["cmd3opt"]
+					}
+				}
+			}
+		}
+	},
+
+	"tests": [
+
+		{
+			"argv": ["--help", "cmd1"],
+
+			"expects": {
+				"arguments": {
+					"help": true,
+					"cmd1opt": null
+				},
+				"operands": [],
+				"commands": ["cmd1"]
+			}
+		},
+
+		{
+			"argv": ["cmd2", "cmd2aaa", "--cmd2aaaopt"],
+
+			"expects": {
+				"arguments": {
+					"help": null,
+					"cmd2opt": null,
+					"cmd2aaaopt": true
+				},
+				"operands": [],
+				"commands": ["cmd2", "cmd2aaa"]
+			}
+		}
+
+	]
+}

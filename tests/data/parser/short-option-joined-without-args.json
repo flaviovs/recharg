@@ -1,0 +1,29 @@
+{
+	"cmdline": {
+		"options": {
+			"a": {
+				"matches": ["a"]
+			},
+			"b": {
+				"matches": ["b"]
+			},
+			"c": {
+				"matches": ["c"]
+			}
+		}
+	},
+
+	"tests": [
+		{
+			"argv": ["-abc"],
+			"expects": {
+				"arguments": {
+					"a": true,
+					"b": true,
+					"c": true
+				},
+				"operands": []
+			}
+		}
+	]
+}

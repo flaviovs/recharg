@@ -1,0 +1,28 @@
+{
+	"options": {
+		"foo": {
+			"matches": ["f", "foo"],
+			"help": "Option foo"
+		},
+		"bar": {
+			"matches": ["b"]
+		},
+		"zee": {
+			"matches": ["zee"],
+			"help": "Option zee"
+		}
+	}
+}
+/**
+   Mixed long and short options. Notice that "-b" does not have help text.
+
+   @expects
+
+Usage: progname [-fb] [--zee]
+
+Options and arguments:
+
+  -f, --foo                 Option foo
+  -b                        (No help text for this option.)
+  --zee                     Option zee
+*/

@@ -1,0 +1,23 @@
+// Basic long option with a joined argument
+{
+	"cmdline": {
+		"options": {
+			"foo": {
+				"matches": ["foo"],
+				"accepts_arguments": true
+			}
+		}
+	},
+
+	"tests": [
+		{
+			"argv": ["--foo=bar"],
+			"expects": {
+				"arguments": {
+					"foo": "bar"
+				},
+				"operands": []
+			}
+		}
+	]
+}

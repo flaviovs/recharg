@@ -1,0 +1,34 @@
+{
+	"options": {
+		"foo": {
+			"matches": ["f"]
+		},
+		"bar": {
+			"matches": ["b"],
+			"required": true
+		},
+		"lee": {
+			"matches": ["l"],
+			"required": true
+		},
+		"zoo": {
+			"matches": ["z"]
+		}
+	}
+
+}
+/**
+   Short options should be joined in the usage line, except required
+   options, which must be listed separately.
+
+   @expects
+
+Usage: progname -bl [-fz]
+
+Options and arguments:
+
+  -f                        (No help text for this option.)
+  -b                        (No help text for this option.)
+  -l                        (No help text for this option.)
+  -z                        (No help text for this option.)
+*/

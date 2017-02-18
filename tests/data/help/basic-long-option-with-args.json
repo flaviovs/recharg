@@ -1,0 +1,23 @@
+{
+	"options": {
+		"foo": {
+			"matches": ["bar"],
+			"accepts_arguments": true
+		}
+	}
+
+}
+/**
+   Basic help handling with a single long option that does accept arguments.
+
+   Notice that, by default, the option placeholder is the option name in
+   upper case.
+
+   @expects
+
+Usage: progname [--bar=FOO]
+
+Options and arguments:
+
+  --bar=FOO                 (No help text for this option.)
+*/

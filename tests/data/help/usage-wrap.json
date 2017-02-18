@@ -1,0 +1,63 @@
+{
+	"options": {
+		"foo": {
+			"matches": ["foo"],
+			"accepts_arguments": true
+		},
+		"bar": {
+			"matches": ["bar"],
+			"accepts_arguments": true
+		},
+		"lee": {
+			"matches": ["lee"],
+			"accepts_arguments": true,
+			"help": "This is a short help line"
+		},
+		"zoo": {
+			"matches": ["z"],
+			"help": "A very long help text, which can be used to check whether wordwrapping is being done properly."
+		},
+		"cla": {
+			"matches": ["c", "more", "and-more", "even-more"]
+		},
+		"mee": {
+			"matches": ["m"]
+		},
+		"verylong": {
+			"matches": ["verylong"]
+		},
+		"alsoverylong": {
+			"matches": ["alsoverylong"],
+			"accepts_arguments": true,
+			"help": "This option also has a very long help test, because we're checking if the help routines can wrap the text properly when the option doesn't fit in the left column."
+		}
+	},
+	"operands": "LONG-OPERAND AND-ANOTHER AND-ANOTHER"
+}
+/**
+   Check that the usage line is being wordwrapped properly.
+
+   @expects
+
+Usage: progname [-zcm] [--verylong] [--foo=FOO] [--bar=BAR] [--lee=LEE]
+                  [--alsoverylong=ALSOVERYLONG] LONG-OPERAND AND-ANOTHER
+                  AND-ANOTHER
+
+Options and arguments:
+
+  --foo=FOO                 (No help text for this option.)
+  --bar=BAR                 (No help text for this option.)
+  --lee=LEE                 This is a short help line
+  -z                        A very long help text, which can be used to
+                              check whether wordwrapping is being done
+                              properly.
+  -c, --more, --and-more,
+      --even-more           (No help text for this option.)
+  -m                        (No help text for this option.)
+  --verylong                (No help text for this option.)
+  --alsoverylong=ALSOVERYLONG
+                            This option also has a very long help test,
+                              because we're checking if the help routines
+                              can wrap the text properly when the option
+                              doesn't fit in the left column.
+*/

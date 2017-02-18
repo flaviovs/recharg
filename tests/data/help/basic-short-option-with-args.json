@@ -1,0 +1,24 @@
+{
+	"options": {
+		"foo": {
+			"matches": ["f"],
+			"accepts_arguments": true
+		}
+	}
+
+}
+/**
+   Basic help handling with a single short option that does accept
+   arguments.
+
+   Notice that, by default, the option placeholder is the option name in
+   upper case.
+
+   @expects
+
+Usage: progname [-f FOO]
+
+Options and arguments:
+
+  -f FOO                    (No help text for this option.)
+*/

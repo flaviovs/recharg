@@ -1,0 +1,24 @@
+// Basic long option test.
+{
+	"cmdline": {
+		"options": {
+			"foo": {
+				"matches": ["f", "foo"],
+				"accepts_arguments": false
+			}
+		}
+	},
+
+	"tests": [
+		{
+			"argv": ["--foo"],
+
+			"expects": {
+				"arguments": {
+					"foo": true
+				},
+				"operands": []
+			}
+		}
+	]
+}

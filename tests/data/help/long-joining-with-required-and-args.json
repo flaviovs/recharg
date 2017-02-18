@@ -1,0 +1,41 @@
+{
+	"options": {
+		"foo": {
+			"matches": ["foo"]
+		},
+		"bar": {
+			"matches": ["bar"],
+			"required": true
+		},
+		"lee": {
+			"matches": ["lee"],
+			"required": true,
+			"accepts_arguments": true
+		},
+		"zoo": {
+			"matches": ["zoo"],
+			"required": true,
+			"accepts_arguments": true
+		},
+		"gee": {
+			"matches": ["gee"],
+			"accepts_arguments": true
+		}
+	}
+
+}
+/**
+   Mix of required/non-required long option with/without arguments.
+
+   @expects
+
+Usage: progname --bar --lee=LEE --zoo=ZOO [--foo] [--gee=GEE]
+
+Options and arguments:
+
+  --foo                     (No help text for this option.)
+  --bar                     (No help text for this option.)
+  --lee=LEE                 (No help text for this option.)
+  --zoo=ZOO                 (No help text for this option.)
+  --gee=GEE                 (No help text for this option.)
+*/

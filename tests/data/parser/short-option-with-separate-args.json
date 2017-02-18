@@ -1,0 +1,24 @@
+// Test short option with a separate argument.
+{
+	"cmdline": {
+		"options": {
+			"foo": {
+				"matches": ["f"],
+				"accepts_arguments": true
+			}
+		}
+	},
+
+	"tests": [
+		{
+			"argv": ["-f", "bar"],
+
+			"expects": {
+				"arguments": {
+					"foo": "bar"
+				},
+				"operands": []
+			}
+		}
+	]
+}

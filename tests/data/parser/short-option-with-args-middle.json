@@ -1,0 +1,34 @@
+// Short option that don't accept arguments should play nice with another
+// short option that does accept arguments. And this argument-accepting
+// option should use the remaining input as its arguments.
+{
+	"cmdline": {
+		"options": {
+			"a": {
+				"matches": ["a"]
+			},
+			"b": {
+				"matches": ["b"],
+				// NB: this options does accept an argument.
+				"accepts_arguments": true
+			},
+			"c": {
+				"matches": ["c"]
+			}
+		}
+	},
+
+	"tests": [
+		{
+			"argv": ["-abc"],
+			"expects": {
+				"arguments": {
+					"a": true,
+					"b": "c",
+					"c": null
+				},
+				"operands": []
+			}
+		}
+	]
+}

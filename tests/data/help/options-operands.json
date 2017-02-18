@@ -1,0 +1,23 @@
+{
+	"options": {
+		"foo": {
+			"matches": ["foo", "f"]
+		},
+		"bar": {
+			"matches": ["b", "bar"]
+		}
+	},
+	"operands": "FOO BAR"
+}
+/**
+   Basic options + operands handling.
+
+   @expects
+
+Usage: progname [-b] [--foo] FOO BAR
+
+Options and arguments:
+
+  -f, --foo                 (No help text for this option.)
+  -b, --bar                 (No help text for this option.)
+*/

@@ -1,0 +1,278 @@
+<?php
+
+namespace Recharg;
+
+class HelpFormatter {
+
+	const HELP_WIDTH = 76;
+	const HELP_OPTIONS_WIDTH = 26;
+
+	/**
+	 * Custom wordwrap with indenting support
+	 *
+	 * Wrap text at some specified column, optionally indenting subsequent
+	 * lines. Pretty much like PHP's wordwrap(), except that the latter
+	 * doesn't plays well with $break parameters larger than 1 character,
+	 * which could be used to implement indenting.
+	 *
+	 * This function does its job doing some tricks with PHP's
+	 * wordwrap(). It should probably be rewritten in the future to be more
+	 * elegant and efficient.
+	 *
+	 * NB: the method signature is slightly different from PHP's wordwrap().
+	 */
+	protected function wordwrap($str, $width, $indent = 0) {
+		if ($indent == 0) {
+			// No indentation requested. wordwrap() is perfectly fine in
+			// these cases.
+			return wordwrap($str, $width);
+		}
+		// Wordwrap using full width, and split into lines/
+		$lines = explode("\n", wordwrap($str, $width));
+		// Get the first line, the one which we do NOT want to be indented.
+		$line1 = array_shift($lines);
+		if (!$lines) {
+			// There's only one line. Nothing else to do.
+			return $line1;
+		}
+
+		// This is our left padding margin.
+		$padding = str_repeat(' ', $indent);
+
+		// Now re-implode the lines after the first, and re-wrap then using
+		// full width, minus the desired indent. Explode the result, and add
+		// the padding using array_map(). Next, implode everything again,
+		// concatenate to the first line, and we're done.
+		return $line1
+			. "\n"
+			. implode("\n",
+			          array_map(function($line) use ($padding) {
+					          return $padding . $line;
+				          },
+				          explode("\n",
+				                  wordwrap(implode(" ", $lines),
+				                           $width - $indent))));
+	}
+
+	protected function makeUsage(CommandLine $cmdline) {
+		$short_required = '';
+		$short_required_wargs = [];
+		$short_optional = '';
+		$short_optional_wargs = [];
+		$long_optional = [];
+		$long_optional_wargs = [];
+		$long_required = [];
+		$long_required_wargs = [];
+
+		foreach ($cmdline->getOptions() as $opt) {
+			// We only process the first match.
+			$flag = $opt->getMatches()[0];
+
+			if (strlen($flag) == 2) {
+				// "-a" -- a short option
+				if ($opt->acceptsArguments()) {
+					if ($opt->isRequired()) {
+						$short_required_wargs[] = "$flag " . strtoupper($opt->getName());
+					} else {
+						$short_optional_wargs[] = "[$flag " . strtoupper($opt->getName()) . ']';
+					}
+				} else {
+					if ($opt->isRequired()) {
+						$short_required .= $flag[1];
+					} else {
+						$short_optional .= $flag[1];
+					}
+				}
+			} else {
+				// A long option
+				if ($opt->acceptsArguments()) {
+					if ($opt->isRequired()) {
+						$long_required_wargs[] = "$flag=" . strtoupper($opt->getName());
+					} else {
+						$long_optional_wargs[] = "[$flag=" . strtoupper($opt->getName()) . "]";
+					}
+				} else {
+					if ($opt->isRequired()) {
+						$long_required[] = $flag;
+					} else {
+						$long_optional[] = "[$flag]";
+					}
+				}
+			}
+		}
+
+		$summary = [];
+		if ($short_required) {
+			$summary[] = '-' . $short_required;
+		}
+
+		if ($short_required_wargs) {
+			$summary[] = implode(' ', $short_required_wargs);
+		}
+
+		if ($long_required) {
+			$summary[] = implode(' ', $long_required);
+		}
+
+		if ($long_required_wargs) {
+			$summary[] = implode(' ', $long_required_wargs);
+		}
+
+		if ($short_optional) {
+			$summary[] = "[-$short_optional]";
+		}
+
+		if ($short_optional_wargs) {
+			$summary[] = implode(' ', $short_optional_wargs);
+		}
+
+		if ($long_optional) {
+			$summary[] = implode(' ', $long_optional);
+		}
+
+		if ($long_optional_wargs) {
+			$summary[] = implode(' ', $long_optional_wargs);
+		}
+
+		return implode(' ', $summary);
+	}
+
+	protected function getUsage(CommandLine $cmdline) {
+		$usage = $cmdline->getUsage() ?: $this->makeUsage($cmdline);
+
+		$operands = $cmdline->getOperands();
+
+		if (!$operands && $cmdline->getCommands()) {
+			// This command line has commands, but no operand help, so
+			// return a suitable operand usage.
+			$operands = "COMMAND";
+		}
+
+		if ($operands) {
+			if ($usage) {
+				$usage .= ' ';
+			}
+			$usage .= $operands;
+		}
+
+		return $usage;
+
+	}
+
+	public function format(CommandLine $cmdline, array $commands) {
+		$full_name = array_shift($commands);
+
+		if ($commands) {
+			$full_name .= ' ' . implode(' ', $commands);
+			$cmd = $cmdline->getCommand($commands);
+		} else {
+			$cmd = $cmdline;
+		}
+
+		$tmp = $this->getUsage($cmd);
+		if ($tmp) {
+			$usage = "$full_name $tmp";
+		} else {
+			$usage = "$full_name";
+		}
+
+		// Wrap the usage line, identing the lines based on full command
+		// length (capped at 30, to avoid problems with long command
+		// chains).
+		$help = $this->wordwrap(
+			"Usage: $usage",
+			static::HELP_WIDTH,
+			min(strlen($full_name), 30)
+				+ 7 // + strlen("Usage: ")
+				+ 3 // + some margin
+		);
+
+		$tmp = $cmd->getDescription();
+		if ($tmp) {
+			$help .= "\n" . $this->wordwrap($tmp, static::HELP_WIDTH);
+		}
+
+		$help_text_width = static::HELP_WIDTH - 4 - static::HELP_OPTIONS_WIDTH;
+
+		$empty_options_column = str_repeat(' ', static::HELP_OPTIONS_WIDTH);
+
+		$options_help = '';
+		foreach ($cmd->getOptions() as $opt) {
+			$short = [];
+			$long = [];
+			foreach ($opt->getMatches() as $match) {
+				if (strlen($match) == 2) {
+					if ($opt->acceptsArguments()) {
+						if ($opt->hasDefault()) {
+							$match .= ' [' . strtoupper($opt->getName()) . ']';
+						} else {
+							$match .= ' ' . strtoupper($opt->getName());
+						}
+					}
+					$short[] = $match;
+				} else {
+					if ($opt->acceptsArguments()) {
+						if ($opt->hasDefault()) {
+							$match .= '[=' . strtoupper($opt->getName()) . ']';
+						} else {
+							$match .= '=' . strtoupper($opt->getName());
+						}
+					}
+					$long[] = $match;
+				}
+			}
+			$lines = explode("\n",
+			                 $this->wordwrap(implode(', ',
+			                                         array_merge($short,
+			                                                     $long)),
+			                                 static::HELP_OPTIONS_WIDTH,
+			                                 4));
+			$options_help .= "\n";
+
+			$nr_lines = count($lines) - 1;
+			for ($i = 0; $i < $nr_lines; $i++) {
+				$options_help .= "  $lines[$i]\n";
+			}
+
+			$options_help .= "  " . str_pad($lines[$i],
+			                                static::HELP_OPTIONS_WIDTH);
+			// The line in the option still can be so long that it cannot be
+			// wrapped (e.g., --verylongoptionwith=MANDATORY-ARGUMENTS). If
+			// that's the case, we force a line break so that everything
+			// aligns properly.
+			if (strlen($lines[$i]) > static::HELP_OPTIONS_WIDTH) {
+				$options_help .= "\n$empty_options_column  ";
+			}
+
+			$options_help .= wordwrap(
+				($opt->getHelp() ?: "(No help text for this option.)"),
+				$help_text_width,
+				"\n$empty_options_column    ");
+		}
+
+		if ($options_help) {
+			$help .= "\n\nOptions and arguments:\n";
+			$help .= $options_help;
+		}
+
+		$cmdlines = $cmd->getCommands();
+		if ($cmdlines) {
+			$help .= "\n\nValid \"" . $full_name . "\" commands:\n";
+			foreach ($cmdlines as $name => $os) {
+				$help .= "\n  " . str_pad($name,
+				                          static::HELP_OPTIONS_WIDTH)
+					. wordwrap(($os->getSummary()
+					            ?: '(No help text for this command.)'),
+					           $help_text_width,
+					           "\n$empty_options_column    ");
+			}
+		}
+
+		$tmp = $cmd->getFooter();
+		if ($tmp) {
+			$help .= "\n\n" . wordwrap($tmp, static::HELP_WIDTH);
+		}
+
+		return $help;
+	}
+}

@@ -1,0 +1,10 @@
+{
+	"operands": "FOO BAR"
+}
+/**
+   Basic operands handling.
+
+   @expects
+
+Usage: progname FOO BAR
+*/

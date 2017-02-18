@@ -1,0 +1,64 @@
+{
+	"cmdline": {
+		"options": {
+			"foo": {
+				"matches": ["f"],
+				"multiple": "COUNT",
+				"default": 0
+			}
+		}
+	},
+	"tests": [
+
+		{
+			"argv": [],
+			"expects": {
+				"arguments": {
+					"foo": 0
+				},
+				"operands": []
+			}
+		},
+
+		{
+			"argv": ["-f", "-f", "-f"],
+			"expects": {
+				"arguments": {
+					"foo": 3
+				},
+				"operands": []
+			}
+		},
+
+		{
+			"argv": ["-f", "x", "-f", "y", "-f"],
+			"expects": {
+				"arguments": {
+					"foo": 3
+				},
+				"operands": ["x", "y"]
+			}
+		},
+
+		{
+			"argv": ["-ff", "-f"],
+			"expects": {
+				"arguments": {
+					"foo": 3
+				},
+				"operands": []
+			}
+		},
+
+		{
+			"argv": ["-fff"],
+			"expects": {
+				"arguments": {
+					"foo": 3
+				},
+				"operands": []
+			}
+		}
+
+	]
+}

@@ -1,0 +1,23 @@
+{
+	"cmdline": {
+		"options": {
+			"verbose": {
+				"matches": ["v", "verbose"],
+				"accepts_arguments": true
+			}
+		}
+	},
+
+	"tests": [
+		{
+			"argv": ["-v"],
+
+			"expects": {
+				"arguments": {
+					"verbose": true
+				},
+				"operands": []
+			}
+		}
+	]
+}

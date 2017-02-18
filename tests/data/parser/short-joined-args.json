@@ -1,0 +1,23 @@
+// Short option with joined argument
+{
+	"cmdline": {
+		"options": {
+			"foo": {
+				"matches": ["f"],
+				"accepts_arguments": true
+			}
+		}
+	},
+
+	"tests": [
+		{
+			"argv": ["-fbar"],
+			"expects": {
+				"arguments": {
+					"foo": "bar"
+				},
+				"operands": []
+			}
+		}
+	]
+}

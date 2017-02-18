@@ -1,0 +1,40 @@
+{
+	"options": {
+		"foo": {
+			"matches": ["f"],
+			"help": "Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Quisque at tristique ex."
+		},
+		"bar": {
+			"matches": ["b"]
+		}
+	},
+	"description": "In hac habitasse platea dictumst. Curabitur aliquam, purus sed rhoncus gravida, turpis nisi faucibus dolor, ut commodo justo nisi sed neque.\n\nAenean sapien purus, blandit eget massa et, faucibus rutrum tortor. Pellentesque at enim vel turpis imperdiet consectetur a sed lorem?",
+	"footer": "Nam sodales quam felis. Sed nec suscipit metus! Phasellus in lacinia nibh, vel auctor tellus. Morbi tristique lectus eu sapien mollis faucibus.\n\nInteger cursus posuere leo a facilisis. Donec volutpat placerat lacus id ultrices."
+}
+/**
+   Check description, footer, and proper wordwrap.
+
+   Notice that the description and footer texts above contain newlines.
+
+   @expects
+
+Usage: progname [-fb]
+In hac habitasse platea dictumst. Curabitur aliquam, purus sed rhoncus
+gravida, turpis nisi faucibus dolor, ut commodo justo nisi sed neque.
+
+Aenean sapien purus, blandit eget massa et, faucibus rutrum tortor.
+Pellentesque at enim vel turpis imperdiet consectetur a sed lorem?
+
+Options and arguments:
+
+  -f                        Class aptent taciti sociosqu ad litora
+                              torquent per conubia nostra, per inceptos
+                              himenaeos. Quisque at tristique ex.
+  -b                        (No help text for this option.)
+
+Nam sodales quam felis. Sed nec suscipit metus! Phasellus in lacinia nibh,
+vel auctor tellus. Morbi tristique lectus eu sapien mollis faucibus.
+
+Integer cursus posuere leo a facilisis. Donec volutpat placerat lacus id
+ultrices.
+*/

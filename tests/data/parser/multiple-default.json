@@ -1,0 +1,24 @@
+// Check that multiple options will only store the last argument (i.e.,
+// Option::STORE_LAST should be the default)
+{
+	"cmdline": {
+		"options": {
+			"foo": {
+				"matches": ["f"],
+				"accepts_arguments": true,
+				"value": 1234
+			}
+		}
+	},
+	"tests": [
+		{
+			"argv": ["-f", "-f", "-f"],
+			"expects": {
+				"arguments": {
+					"foo": 1234
+				},
+				"operands": []
+			}
+		}
+	]
+}

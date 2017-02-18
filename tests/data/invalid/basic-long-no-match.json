@@ -1,0 +1,26 @@
+// Non-matching long options.
+{
+	"cmdline": {
+		"options": {
+			"foo": {
+				"matches": ["foo"]
+			},
+			"bar": {
+				"matches": ["bar"]
+			}
+		}
+	},
+
+	"tests": [
+		{
+			"argv": ["--lee"]
+		},
+		// Ensure that partial matches also won't match
+		{
+			"argv": ["--foobar"]
+		},
+		{
+			"argv": ["--f"]
+		}
+	]
+}

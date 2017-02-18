@@ -1,0 +1,9 @@
+{
+}
+/**
+   Basic help handling with no option, commands, or operands.
+
+   @expects
+
+Usage: progname
+*/

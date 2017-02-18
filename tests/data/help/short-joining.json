@@ -1,0 +1,27 @@
+{
+	"options": {
+		"foo": {
+			"matches": ["f"]
+		},
+		"bar": {
+			"matches": ["b"]
+		},
+		"lee": {
+			"matches": ["l"]
+		}
+	}
+
+}
+/**
+   Short options should be joined in the usage line.
+
+   @expects
+
+Usage: progname [-fbl]
+
+Options and arguments:
+
+  -f                        (No help text for this option.)
+  -b                        (No help text for this option.)
+  -l                        (No help text for this option.)
+*/

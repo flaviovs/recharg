@@ -1,0 +1,83 @@
+{
+	"commands": {
+		"foo": {
+			"options": {
+				"optfoo": {
+					"matches": ["optfoo"]
+				}
+			}
+		},
+		"bar": {
+			"options": {
+				"optbar": {
+					"matches": ["optbar"]
+				}
+			},
+			"commands": {
+				"zee": {
+					"options": {
+						"optbarzee": {
+							"matches": ["optbarzee"]
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+/**
+   Basic command handling.
+
+   @expects
+
+Usage: progname COMMAND
+
+Valid "progname" commands:
+
+  foo                       (No help text for this command.)
+  bar                       (No help text for this command.)
+*/
+
+/**
+   Test "foo" sub-command.
+
+   @command foo
+   @expects
+
+Usage: progname foo [--optfoo]
+
+Options and arguments:
+
+  --optfoo                  (No help text for this option.)
+*/
+
+/**
+   Test "bar" sub-command.
+
+   @command bar
+   @expects
+
+Usage: progname bar [--optbar] COMMAND
+
+Options and arguments:
+
+  --optbar                  (No help text for this option.)
+
+Valid "progname bar" commands:
+
+  zee                       (No help text for this command.)
+*/
+
+/**
+   Test "bar zee" sub-command.
+
+   @command bar zee
+   @expects
+
+Usage: progname bar zee [--optbarzee]
+
+Options and arguments:
+
+  --optbarzee               (No help text for this option.)
+*/
