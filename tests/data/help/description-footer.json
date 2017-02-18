@@ -18,7 +18,7 @@
 
    @expects
 
-Usage: progname [-fb]
+Usage: progname [-bf]
 In hac habitasse platea dictumst. Curabitur aliquam, purus sed rhoncus
 gravida, turpis nisi faucibus dolor, ut commodo justo nisi sed neque.
 
@@ -27,10 +27,10 @@ Pellentesque at enim vel turpis imperdiet consectetur a sed lorem?
 
 Options and arguments:
 
+  -b                        (No help text for this option.)
   -f                        Class aptent taciti sociosqu ad litora
                               torquent per conubia nostra, per inceptos
                               himenaeos. Quisque at tristique ex.
-  -b                        (No help text for this option.)
 
 Nam sodales quam felis. Sed nec suscipit metus! Phasellus in lacinia nibh,
 vel auctor tellus. Morbi tristique lectus eu sapien mollis faucibus.

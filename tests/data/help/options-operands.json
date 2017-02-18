@@ -18,6 +18,6 @@ Usage: progname [-b] [--foo] FOO BAR
 
 Options and arguments:
 
-  -f, --foo                 (No help text for this option.)
   -b, --bar                 (No help text for this option.)
+  -f, --foo                 (No help text for this option.)
 */

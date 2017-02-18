@@ -39,25 +39,25 @@
 
    @expects
 
-Usage: progname [-zcm] [--verylong] [--foo=FOO] [--bar=BAR] [--lee=LEE]
-                  [--alsoverylong=ALSOVERYLONG] LONG-OPERAND AND-ANOTHER
+Usage: progname [-cmz] [--alsoverylong=ALSOVERYLONG] [--bar=BAR] [--foo=FOO]
+                  [--lee=LEE] [--verylong] LONG-OPERAND AND-ANOTHER
                   AND-ANOTHER
 
 Options and arguments:
 
-  --foo=FOO                 (No help text for this option.)
-  --bar=BAR                 (No help text for this option.)
-  --lee=LEE                 This is a short help line
-  -z                        A very long help text, which can be used to
-                              check whether wordwrapping is being done
-                              properly.
-  -c, --more, --and-more,
-      --even-more           (No help text for this option.)
-  -m                        (No help text for this option.)
-  --verylong                (No help text for this option.)
   --alsoverylong=ALSOVERYLONG
                             This option also has a very long help test,
                               because we're checking if the help routines
                               can wrap the text properly when the option
                               doesn't fit in the left column.
+  --bar=BAR                 (No help text for this option.)
+  -c, --more, --and-more,
+      --even-more           (No help text for this option.)
+  --foo=FOO                 (No help text for this option.)
+  --lee=LEE                 This is a short help line
+  -m                        (No help text for this option.)
+  --verylong                (No help text for this option.)
+  -z                        A very long help text, which can be used to
+                              check whether wordwrapping is being done
+                              properly.
 */

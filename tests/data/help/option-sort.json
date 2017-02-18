@@ -1,0 +1,30 @@
+{
+	"options": {
+		"zee": {
+			"matches": ["zee"]
+		},
+		"foo": {
+			"matches": ["f", "foo"]
+		},
+		"bar": {
+			"matches": ["b"]
+		},
+		"COO": {
+			"matches": ["C"]
+		}
+	}
+}
+/**
+   Check default sort order of options.
+
+   @expects
+
+Usage: progname [-bCf] [--zee]
+
+Options and arguments:
+
+  -b                        (No help text for this option.)
+  -C                        (No help text for this option.)
+  -f, --foo                 (No help text for this option.)
+  --zee                     (No help text for this option.)
+*/

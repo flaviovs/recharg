@@ -17,11 +17,11 @@
 
    @expects
 
-Usage: progname [-fbl]
+Usage: progname [-bfl]
 
 Options and arguments:
 
-  -f                        (No help text for this option.)
   -b                        (No help text for this option.)
+  -f                        (No help text for this option.)
   -l                        (No help text for this option.)
 */

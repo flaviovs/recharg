@@ -54,27 +54,43 @@ class HelpFormatter {
 				                           $width - $indent))));
 	}
 
+	protected function compareOptions(Option $a, Option $b) {
+		$opt_a = $a->getMatches()[0];
+		$opt_b = $b->getMatches()[0];
+
+		$opt_a = ($opt_a[1] == '-' ? substr($opt_a, 2) : substr($opt_a, 1));
+		$opt_b = ($opt_b[1] == '-' ? substr($opt_b, 2) : substr($opt_b, 1));
+
+		return strcasecmp($opt_a, $opt_b);
+	}
+
+	protected function getOptionsSorted(CommandLine $cmd) {
+		$options = $cmd->getOptions();
+		@uasort($options, [$this, 'compareOptions']);
+		return $options;
+	}
+
 	protected function makeUsage(CommandLine $cmdline) {
 		$short_required = '';
 		$short_required_wargs = [];
 		$short_optional = '';
 		$short_optional_wargs = [];
 		$long_optional = [];
-		$long_optional_wargs = [];
 		$long_required = [];
-		$long_required_wargs = [];
 
-		foreach ($cmdline->getOptions() as $opt) {
+		foreach ($this->getOptionsSorted($cmdline) as $opt) {
 			// We only process the first match.
 			$flag = $opt->getMatches()[0];
+
+			$placeholder = $opt->getPlaceholder();
 
 			if (strlen($flag) == 2) {
 				// "-a" -- a short option
 				if ($opt->acceptsArguments()) {
 					if ($opt->isRequired()) {
-						$short_required_wargs[] = "$flag " . strtoupper($opt->getName());
+						$short_required_wargs[] = "$flag $placeholder";
 					} else {
-						$short_optional_wargs[] = "[$flag " . strtoupper($opt->getName()) . ']';
+						$short_optional_wargs[] = "[$flag $placeholder]";
 					}
 				} else {
 					if ($opt->isRequired()) {
@@ -87,9 +103,9 @@ class HelpFormatter {
 				// A long option
 				if ($opt->acceptsArguments()) {
 					if ($opt->isRequired()) {
-						$long_required_wargs[] = "$flag=" . strtoupper($opt->getName());
+						$long_required[] = "$flag=$placeholder";
 					} else {
-						$long_optional_wargs[] = "[$flag=" . strtoupper($opt->getName()) . "]";
+						$long_optional[] = "[$flag=$placeholder]";
 					}
 				} else {
 					if ($opt->isRequired()) {
@@ -114,10 +130,6 @@ class HelpFormatter {
 			$summary[] = implode(' ', $long_required);
 		}
 
-		if ($long_required_wargs) {
-			$summary[] = implode(' ', $long_required_wargs);
-		}
-
 		if ($short_optional) {
 			$summary[] = "[-$short_optional]";
 		}
@@ -128,10 +140,6 @@ class HelpFormatter {
 
 		if ($long_optional) {
 			$summary[] = implode(' ', $long_optional);
-		}
-
-		if ($long_optional_wargs) {
-			$summary[] = implode(' ', $long_optional_wargs);
 		}
 
 		return implode(' ', $summary);
@@ -197,25 +205,27 @@ class HelpFormatter {
 		$empty_options_column = str_repeat(' ', static::HELP_OPTIONS_WIDTH);
 
 		$options_help = '';
-		foreach ($cmd->getOptions() as $opt) {
+
+		foreach ($this->getOptionsSorted($cmd) as $opt) {
 			$short = [];
 			$long = [];
+			$placeholder = $opt->getPlaceholder();
 			foreach ($opt->getMatches() as $match) {
 				if (strlen($match) == 2) {
 					if ($opt->acceptsArguments()) {
 						if ($opt->hasDefault()) {
-							$match .= ' [' . strtoupper($opt->getName()) . ']';
+							$match .= " [$placeholder]";
 						} else {
-							$match .= ' ' . strtoupper($opt->getName());
+							$match .= " $placeholder";
 						}
 					}
 					$short[] = $match;
 				} else {
 					if ($opt->acceptsArguments()) {
 						if ($opt->hasDefault()) {
-							$match .= '[=' . strtoupper($opt->getName()) . ']';
+							$match .= "[=$placeholder]";
 						} else {
-							$match .= '=' . strtoupper($opt->getName());
+							$match .= "=$placeholder";
 						}
 					}
 					$long[] = $match;

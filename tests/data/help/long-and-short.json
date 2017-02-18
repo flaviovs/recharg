@@ -18,11 +18,11 @@
 
    @expects
 
-Usage: progname [-fb] [--zee]
+Usage: progname [-bf] [--zee]
 
 Options and arguments:
 
-  -f, --foo                 Option foo
   -b                        (No help text for this option.)
+  -f, --foo                 Option foo
   --zee                     Option zee
 */

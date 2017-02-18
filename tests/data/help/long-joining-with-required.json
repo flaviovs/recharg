@@ -26,8 +26,8 @@ Usage: progname --bar --lee [--foo] [--zoo]
 
 Options and arguments:
 
-  --foo                     (No help text for this option.)
   --bar                     (No help text for this option.)
+  --foo                     (No help text for this option.)
   --lee                     (No help text for this option.)
   --zoo                     (No help text for this option.)
 */

@@ -33,9 +33,9 @@ Usage: progname --bar --lee=LEE --zoo=ZOO [--foo] [--gee=GEE]
 
 Options and arguments:
 
-  --foo                     (No help text for this option.)
   --bar                     (No help text for this option.)
+  --foo                     (No help text for this option.)
+  --gee=GEE                 (No help text for this option.)
   --lee=LEE                 (No help text for this option.)
   --zoo=ZOO                 (No help text for this option.)
-  --gee=GEE                 (No help text for this option.)
 */
