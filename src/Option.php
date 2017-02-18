@@ -73,6 +73,7 @@ class Option {
 		}
 
 		$this->arguments = $arguments;
+		return $this;
 	}
 
 	public function setMultipleHandling($mh) {
