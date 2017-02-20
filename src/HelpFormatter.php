@@ -6,6 +6,7 @@ class HelpFormatter {
 
 	const HELP_WIDTH = 76;
 	const HELP_OPTIONS_WIDTH = 26;
+	const HELP_TEXT_WIDTH = 46;
 
 	protected $label = 'Usage: ';
 
@@ -217,25 +218,10 @@ class HelpFormatter {
 		        : '');
 	}
 
-	public function format(CommandLine $cmdline, array $commands) {
-		$full_name = array_shift($commands);
-
-		if ($commands) {
-			$full_name .= ' ' . implode(' ', $commands);
-			$cmd = $cmdline->getCommand($commands);
-		} else {
-			$cmd = $cmdline;
-		}
-
-		$help = $this->getUsage($cmd, $full_name);
-
-		$help .= $this->formatDescription($cmd);
-
-		$help_text_width = static::HELP_WIDTH - 4 - static::HELP_OPTIONS_WIDTH;
-
+	public function formatOptions(CommandLine $cmd, $full_name) {
 		$empty_options_column = str_repeat(' ', static::HELP_OPTIONS_WIDTH);
 
-		$options_help = '';
+		$help = '';
 
 		foreach ($this->getOptionsSorted($cmd) as $opt) {
 			if ($opt->isHidden()) {
@@ -271,52 +257,74 @@ class HelpFormatter {
 			                                                     $long)),
 			                                 static::HELP_OPTIONS_WIDTH,
 			                                 4));
-			$options_help .= "\n";
+			$help .= "\n";
 
 			$nr_lines = count($lines) - 1;
 			for ($i = 0; $i < $nr_lines; $i++) {
-				$options_help .= "  $lines[$i]\n";
+				$help .= "  $lines[$i]\n";
 			}
 
-			$options_help .= "  " . str_pad($lines[$i],
+			$help .= "  " . str_pad($lines[$i],
 			                                static::HELP_OPTIONS_WIDTH);
 			// The line in the option still can be so long that it cannot be
 			// wrapped (e.g., --verylongoptionwith=MANDATORY-ARGUMENTS). If
 			// that's the case, we force a line break so that everything
 			// aligns properly.
 			if (strlen($lines[$i]) > static::HELP_OPTIONS_WIDTH) {
-				$options_help .= "\n$empty_options_column  ";
+				$help .= "\n$empty_options_column  ";
 			}
 
-			$options_help .= $this->wordwrap(
+			$help .= $this->wordwrap(
 				($opt->getHelp() ?: "(No help text for this option.)"),
-				$help_text_width,
+				static::HELP_TEXT_WIDTH,
 				"\n$empty_options_column    ");
 		}
 
-		if ($options_help) {
-			$help .= "\n\nOptions and arguments:\n";
-			$help .= $options_help;
-		}
+		return $help ? "\n\nOptions and arguments:\n" . $help : '';
+	}
 
+	protected function formatCommands(CommandLine $cmd, $full_name) {
 		$cmdlines = $cmd->getCommands();
-		if ($cmdlines) {
-			$help .= "\n\nValid \"" . $full_name . "\" commands:\n";
-			foreach ($cmdlines as $name => $os) {
-				$help .= "\n  " . str_pad($name,
-				                          static::HELP_OPTIONS_WIDTH)
-					. $this->wordwrap(($os->getSummary()
-					                   ?: '(No help text for this command.)'),
-					                  $help_text_width,
-					                  "\n$empty_options_column    ");
-			}
+		if (!$cmdlines) {
+			return '';
 		}
 
-		$tmp = $cmd->getFooter();
-		if ($tmp) {
-			$help .= "\n\n" . $this->wordwrap($tmp, static::HELP_WIDTH);
+		$empty_options_column = str_repeat(' ', static::HELP_OPTIONS_WIDTH);
+
+		$help = "\n\nValid \"" . $full_name . "\" commands:\n";
+		foreach ($cmdlines as $name => $os) {
+			$help .= "\n  " . str_pad($name,
+			                          static::HELP_OPTIONS_WIDTH)
+				. $this->wordwrap(($os->getSummary()
+				                   ?: '(No help text for this command.)'),
+				                  static::HELP_TEXT_WIDTH,
+				                  "\n$empty_options_column    ");
 		}
 
 		return $help;
+	}
+
+	protected function formatFooter(CommandLine $cmd, $full_name) {
+		$footer = $cmd->getFooter();
+		return ($footer
+		        ? ("\n\n" . $this->wordwrap($footer, static::HELP_WIDTH))
+		        : '');
+	}
+
+	public function format(CommandLine $cmdline, array $commands) {
+		$full_name = array_shift($commands);
+
+		if ($commands) {
+			$full_name .= ' ' . implode(' ', $commands);
+			$cmd = $cmdline->getCommand($commands);
+		} else {
+			$cmd = $cmdline;
+		}
+
+		return $this->getUsage($cmd, $full_name)
+			. $this->formatDescription($cmd, $full_name)
+			. $this->formatOptions($cmd, $full_name)
+			. $this->formatCommands($cmd, $full_name)
+			. $this->formatFooter($cmd, $full_name);
 	}
 }
