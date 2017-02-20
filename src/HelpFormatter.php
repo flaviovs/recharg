@@ -172,8 +172,18 @@ class HelpFormatter {
 		return implode(' ', $summary);
 	}
 
-	protected function getUsage(CommandLine $cmdline) {
-		$usage = $cmdline->getUsage() ?: $this->makeUsage($cmdline);
+	protected function getUsage(CommandLine $cmdline, $command) {
+		$usage = $cmdline->getUsage();
+		if ($usage) {
+			return $this->label . $usage;
+		}
+
+		$usage = $this->label . $command;
+
+		$cmdline_usage = $this->makeUsage($cmdline);
+		if ($cmdline_usage) {
+			$usage .= " $cmdline_usage";
+		}
 
 		$operands = $cmdline->getOperands();
 
@@ -190,8 +200,14 @@ class HelpFormatter {
 			$usage .= $operands;
 		}
 
-		return $usage;
-
+		// Wrap the usage line, identing the lines based on full command
+		// length (capped at 30, to avoid problems with long command
+		// chains).
+		return $this->indentWrap(
+			$usage,
+			static::HELP_WIDTH,
+			min(strlen($command), 30) + strlen($this->label) + 3
+		);
 	}
 
 	public function format(CommandLine $cmdline, array $commands) {
@@ -204,21 +220,7 @@ class HelpFormatter {
 			$cmd = $cmdline;
 		}
 
-		$tmp = $this->getUsage($cmd);
-		if ($tmp) {
-			$usage = "$full_name $tmp";
-		} else {
-			$usage = "$full_name";
-		}
-
-		// Wrap the usage line, identing the lines based on full command
-		// length (capped at 30, to avoid problems with long command
-		// chains).
-		$help = $this->indentWrap(
-			$this->label . $usage,
-			static::HELP_WIDTH,
-			min(strlen($full_name), 30) + strlen($this->label) + 3
-		);
+		$help = $this->getUsage($cmd, $full_name);
 
 		$tmp = $cmd->getDescription();
 		if ($tmp) {
