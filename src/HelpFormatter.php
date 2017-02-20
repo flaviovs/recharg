@@ -255,7 +255,7 @@ class HelpFormatter {
 			                 $this->indentWrap(implode(', ',
 			                                         array_merge($short,
 			                                                     $long)),
-			                                 static::HELP_OPTIONS_WIDTH,
+			                                 static::HELP_OPTIONS_WIDTH - 1,
 			                                 4));
 			$help .= "\n";
 

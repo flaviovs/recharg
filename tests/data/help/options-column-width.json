@@ -1,0 +1,23 @@
+{
+	"options": {
+		"foo": {
+			"matches": ["x", "foobar-x"],
+			"default": 1,
+			"accepts_arguments": true
+		}
+	}
+
+}
+/**
+   Ensure that wordwrapping for the options is done rigth at the option
+   length boundary.
+
+   @expects
+
+Usage: progname [-x FOO]
+
+Options and arguments:
+
+  -x [FOO],
+      --foobar-x[=FOO]      (No help text for this option.)
+*/
