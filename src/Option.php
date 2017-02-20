@@ -91,6 +91,7 @@ class Option {
 		}
 
 		$this->multiple_handling = $mh;
+		return $this;
 	}
 
 	public function getMultipleHandling() {
