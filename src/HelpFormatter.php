@@ -210,6 +210,13 @@ class HelpFormatter {
 		);
 	}
 
+	protected function formatDescription(CommandLine $cmd) {
+		$descr = $cmd->getDescription();
+		return ($descr
+		        ? "\n" . $this->indentWrap($descr, static::HELP_WIDTH)
+		        : '');
+	}
+
 	public function format(CommandLine $cmdline, array $commands) {
 		$full_name = array_shift($commands);
 
@@ -222,10 +229,7 @@ class HelpFormatter {
 
 		$help = $this->getUsage($cmd, $full_name);
 
-		$tmp = $cmd->getDescription();
-		if ($tmp) {
-			$help .= "\n" . $this->indentWrap($tmp, static::HELP_WIDTH);
-		}
+		$help .= $this->formatDescription($cmd);
 
 		$help_text_width = static::HELP_WIDTH - 4 - static::HELP_OPTIONS_WIDTH;
 
