@@ -21,7 +21,7 @@ class HelpFormatter {
 	 *
 	 * NB: the method signature is slightly different from PHP's wordwrap().
 	 */
-	protected function wordwrap($str, $width, $indent = 0) {
+	protected function indentWrap($str, $width, $indent = 0) {
 		if ($indent == 0) {
 			// No indentation requested. wordwrap() is perfectly fine in
 			// these cases.
@@ -52,6 +52,10 @@ class HelpFormatter {
 				          explode("\n",
 				                  wordwrap(implode(" ", $lines),
 				                           $width - $indent))));
+	}
+
+	protected function wordwrap($text, $width, $break = "\n") {
+		return wordwrap($text, $width, $break);
 	}
 
 	protected function compareOptions(Option $a, Option $b) {
@@ -199,7 +203,7 @@ class HelpFormatter {
 		// Wrap the usage line, identing the lines based on full command
 		// length (capped at 30, to avoid problems with long command
 		// chains).
-		$help = $this->wordwrap(
+		$help = $this->indentWrap(
 			"Usage: $usage",
 			static::HELP_WIDTH,
 			min(strlen($full_name), 30)
@@ -209,7 +213,7 @@ class HelpFormatter {
 
 		$tmp = $cmd->getDescription();
 		if ($tmp) {
-			$help .= "\n" . $this->wordwrap($tmp, static::HELP_WIDTH);
+			$help .= "\n" . $this->indentWrap($tmp, static::HELP_WIDTH);
 		}
 
 		$help_text_width = static::HELP_WIDTH - 4 - static::HELP_OPTIONS_WIDTH;
@@ -247,7 +251,7 @@ class HelpFormatter {
 				}
 			}
 			$lines = explode("\n",
-			                 $this->wordwrap(implode(', ',
+			                 $this->indentWrap(implode(', ',
 			                                         array_merge($short,
 			                                                     $long)),
 			                                 static::HELP_OPTIONS_WIDTH,
@@ -269,7 +273,7 @@ class HelpFormatter {
 				$options_help .= "\n$empty_options_column  ";
 			}
 
-			$options_help .= wordwrap(
+			$options_help .= $this->wordwrap(
 				($opt->getHelp() ?: "(No help text for this option.)"),
 				$help_text_width,
 				"\n$empty_options_column    ");
@@ -286,16 +290,16 @@ class HelpFormatter {
 			foreach ($cmdlines as $name => $os) {
 				$help .= "\n  " . str_pad($name,
 				                          static::HELP_OPTIONS_WIDTH)
-					. wordwrap(($os->getSummary()
-					            ?: '(No help text for this command.)'),
-					           $help_text_width,
-					           "\n$empty_options_column    ");
+					. $this->wordwrap(($os->getSummary()
+					                   ?: '(No help text for this command.)'),
+					                  $help_text_width,
+					                  "\n$empty_options_column    ");
 			}
 		}
 
 		$tmp = $cmd->getFooter();
 		if ($tmp) {
-			$help .= "\n\n" . wordwrap($tmp, static::HELP_WIDTH);
+			$help .= "\n\n" . $this->wordwrap($tmp, static::HELP_WIDTH);
 		}
 
 		return $help;
