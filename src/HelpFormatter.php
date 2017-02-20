@@ -173,7 +173,7 @@ class HelpFormatter {
 		return implode(' ', $summary);
 	}
 
-	protected function getUsage(CommandLine $cmdline, $command) {
+	protected function formatUsage(CommandLine $cmdline, $command) {
 		$usage = $cmdline->getUsage();
 		if ($usage) {
 			return $this->label . $usage;
@@ -321,7 +321,7 @@ class HelpFormatter {
 			$cmd = $cmdline;
 		}
 
-		return $this->getUsage($cmd, $full_name)
+		return $this->formatUsage($cmd, $full_name)
 			. $this->formatDescription($cmd, $full_name)
 			. $this->formatOptions($cmd, $full_name)
 			. $this->formatCommands($cmd, $full_name)
