@@ -7,6 +7,17 @@ class HelpFormatter {
 	const HELP_WIDTH = 76;
 	const HELP_OPTIONS_WIDTH = 26;
 
+	protected $label = 'Usage: ';
+
+	public function setUsageLabel($label) {
+		$this->label = $label;
+		return $this;
+	}
+
+	public function getUsageLabel() {
+		return $this->label;
+	}
+
 	/**
 	 * Custom wordwrap with indenting support
 	 *
@@ -204,11 +215,9 @@ class HelpFormatter {
 		// length (capped at 30, to avoid problems with long command
 		// chains).
 		$help = $this->indentWrap(
-			"Usage: $usage",
+			$this->label . $usage,
 			static::HELP_WIDTH,
-			min(strlen($full_name), 30)
-				+ 7 // + strlen("Usage: ")
-				+ 3 // + some margin
+			min(strlen($full_name), 30) + strlen($this->label) + 3
 		);
 
 		$tmp = $cmd->getDescription();

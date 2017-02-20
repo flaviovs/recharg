@@ -79,4 +79,19 @@ class HelpFormatterTestTest extends \PHPUnit\Framework\TestCase {
 		}
 	}
 
+
+	public function testDefaultUsageLabel() {
+		$hf = new HelpFormatter();
+
+		$this->assertEquals('Usage: ', $hf->getUsageLabel());
+	}
+
+
+	public function testSetUsageLabel() {
+		$hf = new HelpFormatter();
+
+		$hf->setUsageLabel('foobar');
+		$this->assertEquals('foobar', $hf->getUsageLabel());
+	}
+
 }
